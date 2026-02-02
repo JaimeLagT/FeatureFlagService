@@ -1,3 +1,7 @@
+#Database.py is a file were:
+#Connection pool is created
+#get DB function is created
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import session, sessionmaker
 from os import getenv
@@ -20,7 +24,7 @@ sessionLocal = sessionmaker(autocommit = False, autoflush=False, bind = engine)
 #We will create a parent class for the table object which is a python class
 # these classes are special database models
 
-base = declarative_base()
+Base = declarative_base()
 
 #getDb function
 # Creates a new session
