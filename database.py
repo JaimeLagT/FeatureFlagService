@@ -31,7 +31,7 @@ Base = declarative_base()
 # yields it (hands it to the route)
 # closes it when the route is done
 
-def getDb():
+def get_db():
     #We create a new local session
     db = sessionLocal()
     try:
