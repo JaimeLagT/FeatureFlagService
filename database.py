@@ -11,7 +11,7 @@ from sqlalchemy.ext.declarative import declarative_base
 #this grabs the postgreSQL username and password, host and database name
 #becuase we want this to work in my mac and docker container we use os.getenv
 #if it doesnt find the variable it uses the default one (2nd argument)
-DATABASE_URL = getenv("DATABASE_URL","postgresql://user:password@localhost/db_name")
+DATABASE_URL = getenv("DATABASE_URL","postgresql://user:password@localhost/feature_flags")
 
 #here we created the connection pool
 #this is done in order to not have a db handshake with every request

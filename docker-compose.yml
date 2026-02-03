@@ -1,0 +1,33 @@
+services:
+  # db service
+  db:
+    #1 docker image
+    #This tells docker to go to docker hub and pull the latest postgres image
+    image: postgres:15
+    #2 container name
+    # Gives the container a name so we can reference it later
+    #when running 'docker ps'.
+    container_name: feature_flags_db
+    #3 environment variables
+    # When the postgres image starts up for the first time
+    #it checks these and automatically creates the database and user
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: feature_flags
+    #4 Ports
+    # Syntax is "HOST:CONTAINER"
+    # We open port 5432 because that's the default port for postgres
+    # This allows the local python app to connect to the database inside docker
+    ports:
+      - "5432:5432"
+    #5 Volumes
+    # Containers are temporary. If we delete the container, the data is lost.
+    # A Volume is a way to persist the data even if the container is deleted
+    # where postgres will store its data (/var/lib/postgresql/data)
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+# --- Volumes Definition ---
+# We must list any named volumes we used above.
+volumes:
+  postgres_data:
