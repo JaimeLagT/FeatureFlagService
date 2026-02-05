@@ -33,5 +33,7 @@ def create_flag(flag : FlagCreate, db : Session = Depends(get_db)):
 def read_flags(db : Session = Depends(get_db)):
     #ask data base for all flags
     flags = db.query(Flag).all()
-    
+
     return flags
+
+#TODO: dont forget
