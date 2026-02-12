@@ -5,5 +5,5 @@ class FlagCreate(BaseModel):
     description: str | None = None
 
 class SettingsCreate(BaseModel):
-    status: bool
+    isEnabled: bool
     environment: str
