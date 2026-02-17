@@ -27,6 +27,19 @@ services:
     # where postgres will store its data (/var/lib/postgresql/data)
     volumes:
       - postgres_data:/var/lib/postgresql/data
+  # web service
+  web:
+    #this tells docker to look in the current folder for my dockerfile
+    build:  .
+    #Maps my computers port 8000 to the containers port 8000
+    ports:
+      - "8000:8000"
+      #Ensures the db starts before the app tries to connect to it
+    depends_on:
+      - db
+      #tells python code where the db is located
+    environment:
+      DATABASE_URL: postgresql://user:password@db:5432/feature_flags
 # --- Volumes Definition ---
 # We must list any named volumes we used above.
 volumes:
