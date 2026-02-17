@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException, Depends
 from database import engine, get_db
 from models import Base, Flag, FlagSetting
-from schemas import FlagCreate, SettingsCreate
+from schemas import FlagCreate, SettingsCreate, SettingsUpdate
 from sqlalchemy.orm import Session
 
 #Create application instance
@@ -47,6 +47,8 @@ def create_setting(setting: SettingsCreate ,flagID: int , db : Session = Depends
 
     return new_setting
 
+
+#Here we check if a certain flag is enabled in the provided environment
 @app.get("/check/{name}")
 def read_environment(name: str,  environment : str = "prod", db : Session = Depends(get_db)):
     #query data base for flag with matching name
@@ -64,3 +66,28 @@ def read_environment(name: str,  environment : str = "prod", db : Session = Depe
         }
     #return the boolean for enabled
     return {"Flag named" : name, "environment": environment, "isEnabled": setting.isEnabled}
+
+@app.put("/settings/{setting_id}")
+def update_setting(setting_id: int, settings_data: SettingsUpdate, db : Session = Depends(get_db)):
+    #fetch the setting we are looking for and update the is Enabled
+    result = db.query(FlagSetting).filter(FlagSetting.id == setting_id).update({"isEnabled": settings_data.update})
+    #exception for when we dont find that setting
+    if result == 0:
+        raise HTTPException(status_code = 404, detail= f"Flag '{setting_id}' not found")
+    db.commit()
+
+    return{
+        "setting_id" : setting_id, 
+        "isEnabled": settings_data.update
+        }
+
+@app.delete("/settings/{setting_id}")
+def delete_setting(setting_id: int, db : Session = Depends(get_db)):
+    #fetch the setting we want to delete
+    result = db.query(FlagSetting).filter(FlagSetting.id == setting_id).delete()
+    if result == 0:
+        raise HTTPException(status_code = 404, detail= f"Flag '{setting_id}' not found")
+    db.commit()
+    return{
+        "setting_id" : setting_id, 
+        }

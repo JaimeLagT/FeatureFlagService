@@ -7,3 +7,6 @@ class FlagCreate(BaseModel):
 class SettingsCreate(BaseModel):
     isEnabled: bool
     environment: str
+
+class SettingsUpdate(BaseModel):
+    update:bool
