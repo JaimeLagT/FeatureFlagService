@@ -91,3 +91,6 @@ def delete_setting(setting_id: int, db : Session = Depends(get_db)):
     return{
         "setting_id" : setting_id, 
         }
+
+
+#add more endpoints later
